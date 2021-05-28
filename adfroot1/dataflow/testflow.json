@@ -1,0 +1,28 @@
+{
+	"name": "testflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "salesdata",
+						"type": "DatasetReference"
+					},
+					"name": "sales"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "Agg"
+				},
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				}
+			],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tlimit: 1000) ~> sales\nMapDrifted1 aggregate(groupBy(reg = Region),\n\tCNT = countDistinct(Region, Country)) ~> Agg\nsales derive(Region = toString(byName('Region')),\n\t\tCountry = toString(byName('Country')),\n\t\t{Item Type} = toString(byName('Item Type')),\n\t\t{Sales Channel} = toString(byName('Sales Channel')),\n\t\t{Order Priority} = toString(byName('Order Priority')),\n\t\t{Order Date} = toString(byName('Order Date')),\n\t\t{Order ID} = toString(byName('Order ID')),\n\t\t{Ship Date} = toString(byName('Ship Date')),\n\t\t{Units Sold} = toString(byName('Units Sold')),\n\t\t{Unit Price} = toString(byName('Unit Price')),\n\t\t{Unit Cost} = toString(byName('Unit Cost')),\n\t\t{Total Revenue} = toString(byName('Total Revenue')),\n\t\t{Total Cost} = toString(byName('Total Cost')),\n\t\t{Total Profit} = toString(byName('Total Profit'))) ~> MapDrifted1"
+		}
+	}
+}
