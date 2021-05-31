@@ -1,9 +1,17 @@
 {
-	"name": "AzureSqlTable1",
+	"name": "gentable",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDb32",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tablename": {
+				"type": "string"
+			},
+			"schemaname": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -14,7 +22,7 @@
 				"type": "Expression"
 			},
 			"table": {
-				"value": "@dataset().Tablename",
+				"value": "@dataset().tablename",
 				"type": "Expression"
 			}
 		}
